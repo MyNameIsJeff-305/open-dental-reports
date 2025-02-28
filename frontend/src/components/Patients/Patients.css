@@ -1,0 +1,23 @@
+.patients-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.patients-header-search {
+    display: flex;
+    flex-direction: column;
+    justify-items: end;
+    column-gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.patients-search {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 10px;
+    align-items: center;
+}

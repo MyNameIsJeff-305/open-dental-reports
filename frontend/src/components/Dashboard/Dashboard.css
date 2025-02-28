@@ -1,0 +1,39 @@
+.dashboard-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.date-picker-container {
+    display: flex;
+    flex-direction: column;
+    justify-items: end;
+    column-gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.date-picker {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.error-msg {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    color: red;
+    font-size: 14px;
+    text-align: right;
+}

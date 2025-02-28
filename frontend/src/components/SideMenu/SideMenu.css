@@ -1,0 +1,40 @@
+/* SideMenu.css */
+.side-menu {
+    width: 240px;               /* Set the width of the side menu */
+    background-color: #2c3e50;  /* Dark background color */
+    color: #ecf0f1;             /* Light text color */
+    height: 100vh;  
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Light shadow to separate the menu */
+}
+
+.side-menu ul {
+    list-style-type: none;      /* Remove default list styling */
+    padding: 10px;
+    margin: 0;
+}
+
+.side-menu .menu-item {
+    display: block;             /* Make the links block-level for easy click */
+    padding: 15px 20px;         /* Padding around each link */
+    color: #ecf0f1;             /* Link text color */
+    text-decoration: none;      /* Remove underline from links */
+    font-size: 16px;            /* Font size for the links */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.side-menu .menu-item:hover {
+    background-color: #34495e;  /* Hover background color */
+    color: #ffffff;             /* Change text color on hover */
+}
+
+.side-menu .menu-item:active {
+    background-color: #2980b9;  /* Active (clicked) background color */
+}
+
+.side-menu .menu-item:first-child {
+    margin-top: 0;              /* Remove margin from the top of the first link */
+}
+
+.side-menu .menu-item + .menu-item {
+    border-top: 1px solid #34495e; /* Add a border between menu items */
+}

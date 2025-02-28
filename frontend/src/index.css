@@ -1,0 +1,102 @@
+/* Default Light Theme Variables */
+:root {
+    --background-gradient: linear-gradient(90deg, var(--razzmatazz), var(--jonquil), var(--tiffany-blue));
+    --background-color: #f9f9f9;
+    --background-color-2: #e6e6e6;
+    --background-color-3: #dfdede;
+    --background-modal: #f9f9f9a7;
+    --text-color: #1d1a05;
+    --special-button-color: none;
+    --button-bg-color: var(--ultra-violet);
+    --button-text-color: #f9f9f9;
+    --header-bg-color: #f8f9fa;
+    --footer-bg-color: #f1f1f1;
+    --ultra-violet: #5e53a4;
+    --tiffany-blue: #66c6b8;
+    --razzmatazz: #ed1476;
+    --jonquil: #fecb19;
+    --smoky-black: #1d1a05;
+    --box-bg: #f1f1f1;
+    --box-bg-border: #555;
+    --ticket-card-bg: #ececec;
+    --seasalt: #f9f9f9;
+    --login-bg: #d0d0d0;
+    --semitransparent-bg: #ffffff6d;
+    --special-btn: var(--tiffany-blue);
+}
+
+/* Dark Theme Variables */
+body.dark-mode {
+    --special-btn: var(--razzmatazz);
+    --special-button-color: var(--ultra-violet);
+    --background-gradient: linear-gradient(90deg, var(--ultra-violet), var(--razzmatazz), var(--tiffany-blue));
+    --background-color: #333;
+    --background-color-2: #2a2a2a;
+    --background-color-3: #2f2f2f;
+    --background-modal: #333333a7;
+    --text-color: #f9f9f9;
+    --button-bg-color: #ed1476;
+    --ticket-card-bg: #666;
+    --button-text-color: #f9f9f9;
+    --box-bg: #555;
+    --box-bg-border: #f1f1f1;
+    --header-bg-color: #333;
+    --footer-bg-color: #333;
+    --login-bg: #4a4a4a;
+    --semitransparent-bg: #3333336d;
+}
+
+/* Global Styles */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* index.css */
+.app-div-container {
+    display: flex;               /* Use flexbox to position the side menu and content area */
+    flex-direction: column;      /* Stack the main content and footer vertically */
+    /* height: 100vh;               Full viewport height */
+    padding: 0;
+    width: 100%;
+  }
+  
+  .main-zone {
+    display: flex;               /* Use flexbox for side-by-side layout */
+    /* flex-grow: 1;                Allow main content area to grow */
+  }
+  
+  .main-zone-left {
+    width: 240px;                /* Side menu width */
+    background-color: #2c3e50;   /* Background color for the left side */
+  }
+  
+  .main-zone-right {
+    flex-grow: 1;                /* The main content will fill the rest of the space */
+    padding: 20px;
+    background-color: #ecf0f1;   /* Light background color for content area */
+  }
+  
+  .footer {
+    background-color: #2c3e50;   /* Dark background for the footer */
+    color: #ecf0f1;              /* Light footer text */
+    text-align: center;          /* Center the footer text */
+    padding: 10px 0;             /* Padding for the footer */
+  }
+  
+  @media (max-width: 768px) {
+    .main-zone {
+      flex-direction: column;    /* Stack side menu and content on smaller screens */
+    }
+  
+    .main-zone-left {
+      width: 100%;               /* Full width for the side menu in mobile view */
+      height: auto;              /* Adjust height based on content */
+    }
+  
+    .main-zone-right {
+      padding: 10px;             /* Reduced padding on mobile */
+    }
+  }
+  
