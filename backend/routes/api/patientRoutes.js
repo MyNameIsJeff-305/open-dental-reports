@@ -85,4 +85,17 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+//Get all Procedures for a patient by ID
+router.get("/:id/procedures", async (req, res) => {
+    const { id } = req.params;
+    const query = 'SELECT * FROM procedure WHERE PatNum = ?'; // Adjust the query based on your schema
+    try {
+        const [procedures] = await db.execute(query, [id]);
+        res.json(procedures);
+    } catch (error) {
+        console.error("Error fetching procedures:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 module.exports = router;
