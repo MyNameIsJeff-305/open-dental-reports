@@ -7,6 +7,7 @@ const GET_LAST_MONTH_PATIENTS = 'patient/GET_LAST_MONTH_PATIENTS';
 const GET_LAST_YEAR_PATIENTS = 'patient/GET_LAST_YEAR_PATIENTS';
 const GET_PATIENTS_BY_DATE_RANGE = 'patient/GET_PATIENTS_BY_DATE_RANGE';
 const GET_PATIENT_BY_ID = 'patient/GET_PATIENT_BY_ID';
+const GET_PROCEDURES_BY_PATIENT_ID = 'patient/GET_PROCEDURES_BY_PATIENT_ID';
 
 //ACTION CREATORS
 const getAllPatients = (patients) => ({
@@ -37,6 +38,11 @@ const getPatientsByDateRange = (patients) => ({
 const getPatientById = (patient) => ({
     type: GET_PATIENT_BY_ID,
     payload: patient
+});
+
+const getProceduresByPatientId = (procedures) => ({
+    type: GET_PROCEDURES_BY_PATIENT_ID,
+    payload: procedures
 });
 
 
@@ -77,8 +83,14 @@ export const fetchPatientById = (id) => async (dispatch) => {
     dispatch(getPatientById(data));
 }
 
+export const fetchProceduresByPatientId = (id) => async (dispatch) => {
+    const response = await csrfFetch(`/api/patients/${id}/procedures`);
+    const data = await response.json();
+    dispatch(getProceduresByPatientId(data));
+}
+
 //REDUCER
-const initialState = { patients: [], currentPatient: {} };
+const initialState = { patients: [], currentPatient: {}, currentProcedures: [] };
 
 const patientReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -94,6 +106,8 @@ const patientReducer = (state = initialState, action) => {
             return { ...state, patients: action.payload };
         case GET_PATIENT_BY_ID:
             return { ...state, currentPatient: action.payload };
+        case GET_PROCEDURES_BY_PATIENT_ID:
+            return { ...state, currentProcedures: action.payload };
         default:
             return state;
     }

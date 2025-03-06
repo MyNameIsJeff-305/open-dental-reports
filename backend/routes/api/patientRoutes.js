@@ -88,7 +88,23 @@ router.get("/:id", async (req, res) => {
 //Get all Procedures for a patient by ID
 router.get("/:id/procedures", async (req, res) => {
     const { id } = req.params;
-    const query = 'SELECT * FROM procedure WHERE PatNum = ?'; // Adjust the query based on your schema
+    const query =
+        `SELECT 
+        p.ProcDate, 
+        p.ProcNum,
+        p.PatNum,
+        p.ProcStatus,
+        c.Descript AS procedure_name,
+        c.ProcCode AS procedure_code
+    FROM 
+        procedurelog p 
+    JOIN 
+        procedurecode c ON p.CodeNum = c.CodeNum
+    WHERE 
+        p.PatNum = ? 
+    ORDER BY 
+        p.ProcDate DESC`;
+
     try {
         const [procedures] = await db.execute(query, [id]);
         res.json(procedures);

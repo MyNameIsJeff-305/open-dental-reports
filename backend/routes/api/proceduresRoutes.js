@@ -13,12 +13,12 @@ router.get("/", async (req, res) => {
             p.ProcDate AS procedure_date,
             c.Descript AS procedure_name,
             c.ProcCode AS procedure_code,
+            p.ProcStatus AS procedure_status,
             pat.FName AS first_name,
             pat.LName AS last_name
         FROM procedurelog p
         JOIN procedurecode c ON p.CodeNum = c.CodeNum
-        JOIN patient pat ON p.PatNum = pat.PatNum
-        WHERE p.ProcStatus IN (2, 3, 4)`;
+        JOIN patient pat ON p.PatNum = pat.PatNum`;
 
     const queryParams = [];
 
@@ -101,6 +101,7 @@ router.get("/lastyear", async (req, res) => {
             p.ProcDate AS procedure_date,
             c.Descript AS procedure_name,
             c.ProcCode AS procedure_code,
+            p.ProcStatus AS procedure_status,
             pat.FName AS first_name,
             pat.LName AS last_name
         FROM procedurelog p

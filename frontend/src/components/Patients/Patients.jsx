@@ -1,10 +1,13 @@
-import { DataGrid, GridSelectedRowCount } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchAllPatients, fetchPatientById } from '../../store/patientReducer';
+import { fetchAllPatients, fetchPatientById, fetchProceduresByPatientId } from '../../store/patientReducer';
 
 import { Box, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import CallIcon from '@mui/icons-material/Call';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -17,12 +20,15 @@ import './Patients.css';
 const Patients = () => {
     const patients = useSelector(state => state.patient.patients);
     const patient = useSelector(state => state.patient.currentPatient);
+    const procedures = useSelector(state => state.patient.currentProcedures);
+
     const [selectedRow, setSelectedRow] = useState(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchAllPatients());
         dispatch(fetchPatientById());
+        // dispatch(fetchProceduresByPatientId(patient.PatNum));
     }, [dispatch]);
 
     if (!patients) {
@@ -160,7 +166,29 @@ const Patients = () => {
         return { label: phone, cta: phone };
     }
 
-    const rows = patients.map(patient => {
+    const prRows = procedures.map(procedure => {
+        return {
+            id: procedure.ProcNum,
+            date: moment(procedure.ProcDate).format('L'),
+            name: procedure.procedure_name,
+        }
+    });
+
+    const prColumns = [{
+        field: 'id',
+        headerName: 'ID',
+        width: 90
+    }, {
+        field: 'date',
+        headerName: 'Date',
+        width: 150
+    }, {
+        field: 'name',
+        headerName: 'Name',
+        width: 150
+    }];
+
+    const ptRows = patients.map(patient => {
         return {
             id: patient.PatNum,
             first_name: patient.FName,
@@ -171,7 +199,7 @@ const Patients = () => {
         }
     });
 
-    const columns = [{
+    const ptColumns = [{
         field: 'id',
         headerName: 'ID',
         width: 90
@@ -205,10 +233,9 @@ const Patients = () => {
 
     const handleRowClick = (row) => {
         dispatch(fetchPatientById(row.id));
+        dispatch(fetchProceduresByPatientId(row.id));
         setSelectedRow(row);
     };
-
-
 
     return (
         <Box sx={{ width: '100%', height: '87vh' }}>
@@ -238,50 +265,97 @@ const Patients = () => {
                 </div>
             </div>
             <Box sx={{ display: "flex", flexDirection: "row", height: '100%', width: '100%', rowGap: 2, columnGap: 2 }}>
-                <Box sx={{ height: '100%', width: '65%' }}>
+                <Box sx={{ height: '100%', width: '60%' }}>
                     <DataGrid
-                        rows={rows}
+                        rows={ptRows}
                         onRowClick={(e) => handleRowClick(e.row)}
-                        columns={columns}
+                        columns={ptColumns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                     />
                 </Box>
-                <Box sx={{ height: '100%', width: '35%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                <Box sx={{ height: '100%', width: '40%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                     {patient.PatNum ? (
-                        <Box sx={{ height: '100%', width: '90%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                            <Box sx={{ width: '100%', height: "100%", padding: 3, border: '1px solid #ddd', borderRadius: 2, boxShadow: 2 }}>
-                                <Typography component="h2" variant="h5" sx={{ mb: 2, color: 'text.secondary' }}>
+                        <Box sx={{ width: '90%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                            <Box sx={{ width: '100%', height: "82vh", padding: 3, border: '1px solid #ddd', borderRadius: 2, boxShadow: 2 }}>
+                                <Typography component="h2" variant="h5" sx={{ color: 'text.secondary' }}>
                                     Patient Details
                                 </Typography>
-                                {/* Patient's Full Name */}
                                 <Typography variant="body1" sx={{ mb: 1 }}>
                                     <strong>Name: </strong>{patient.FName} {patient.LName}
                                 </Typography>
-
-                                {/* Patient's Date of Birth */}
                                 <Typography variant="body1" sx={{ mb: 1 }}>
                                     <strong>Date of Birth: </strong>{moment(patient.Birthdate).format('LL')}
                                 </Typography>
-
-                                {/* Patient's Gender */}
                                 <Typography variant="body1" sx={{ mb: 1 }}>
                                     <strong>Gender: </strong>{getGender(patient.Gender)}
                                 </Typography>
-
-                                {/* Patient's Civil Status */}
                                 <Typography variant="body1" sx={{ mb: 1 }}>
                                     <strong>Civil Status:</strong> {getCivilStatus(patient.Position)}
                                 </Typography>
-
-                                {/* Additional Patient Information */}
-                                <Typography variant="body1" sx={{ mb: 1 }}>
+                                <Typography variant="body1" sx={{ mb: 1, gap: 3 }}>
                                     <strong>Contact Information: </strong>
-                                    <div>
-                                        <p>{getFormattedPhone(patient.HmPhone).label}</p>
-                                        <p>{patient.Email}</p>
-                                    </div>
                                 </Typography>
+                                <div style={{ display: "flex", flexDirection: "row", columnGap: "10px", marginBottom: "10px" }}>
+                                    {patient.HmPhone ? (
+                                        <Button
+                                            variant="contained"
+                                            size='small'
+                                            startIcon={<CallIcon />}
+                                            href={`tel:+1${getFormattedPhone(patient.HmPhone).cta}`}
+                                        >
+                                            {getFormattedPhone(patient.HmPhone).label}
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="contained"
+                                            size='small'
+                                            startIcon={<CallIcon />}
+                                            disabled={true}
+                                        >
+                                            No Phone
+                                        </Button>
+                                    )}
+                                    {patient.Email ? (
+                                        <>
+                                            <Button
+                                                variant="contained"
+                                                size='small'
+                                                startIcon={<AlternateEmailIcon />}
+                                                href={`mailto:${patient.Email}`}
+                                            >
+                                                {patient.Email}
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <Button
+                                            variant="contained"
+                                            size='small'
+                                            startIcon={<AlternateEmailIcon />}
+                                            disabled={true}
+                                        >
+                                            No Email
+                                        </Button>
+                                    )}
+                                </div>
+                                <Typography variant="body1" sx={{ mb: 1 }}>
+                                    <strong>Procedures</strong>
+                                </Typography>
+                                {procedures ? (
+                                    <DataGrid
+                                        rows={prRows}
+                                        columns={prColumns}
+                                        pageSize={5}
+                                        defaultPageSize={5}
+                                        pageSizeOptions={[5, 10, 20, 50, 100]}
+                                        rowsPerPageOptions={[5]}
+                                        sx={{ width: '100%', height: '66%' }}
+                                    />
+                                ) : (
+                                    <Typography component="h2" variant="h6" sx={{ mb: 2, color: 'text.secondary' }}>
+                                        No procedures found
+                                    </Typography>
+                                )}
                             </Box>
                         </Box>
                     ) : (
@@ -293,7 +367,6 @@ const Patients = () => {
             </Box>
         </Box>
     )
-
 }
 
 export default Patients
