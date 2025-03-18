@@ -13,6 +13,8 @@ const getColors = [
     '#CDDC39','#FFEB3B','#FF5722','#9C27B0','#E91E63','#607D8B',
     '#795548', '#FF9800', '#03A9F4', '#00BCD4', '#8BC34A', '#CDDC39',
     '#FFEB3B', '#FF5722', '#9C27B0', '#E91E63', '#607D8B', '#795548',
+    '#FF9800', '#03A9F4', '#00BCD4', '#8BC34A', '#CDDC39', '#FFEB3B',
+    '#FF5722', '#9C27B0', '#E91E63', '#607D8B', '#795548', '#FF9800'
 ]
 
 interface PieCenterLabelProps {
