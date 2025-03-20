@@ -84,6 +84,14 @@ const Dashboard = () => {
         return periodData;
     };
 
+    const totalNewPatients = () => {
+        let total = 0;
+        getPeriodDataPatients(getPatientsByDay(patients)).forEach((day) => {
+            total += day;
+        });
+        return total;
+    }
+
     const getProceduresByDay = (procedures) => {
         const proceduresByDay = {};
 
@@ -186,7 +194,7 @@ const Dashboard = () => {
     const CARDS_DATA = [
         {
             title: "New Patients",
-            value: patients.length,
+            value: totalNewPatients(),
             interval: `${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}`,
             data: getPeriodDataPatients(getPatientsByDay(patients))
         },
