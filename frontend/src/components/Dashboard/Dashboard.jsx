@@ -56,11 +56,14 @@ const Dashboard = () => {
         </div>
     );
 
+    const filteredPatients = patients.filter(patient => moment(patient.SecDateEntry).isBetween(startDate, endDate));
+
+    console.log(patients, "THIS IS FILTERED");
+
     const getPatientsByDay = (patients) => {
         const patientsByDay = {};
-
         patients.forEach(patient => {
-            const day = moment(patient.SecDateEntry).format('MM/DD/YYYY');
+            const day = moment(patient.DateFirstVisit).format('MM/DD/YYYY');
             if (!patientsByDay[day]) {
                 patientsByDay[day] = 0;
             }

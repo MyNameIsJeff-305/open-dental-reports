@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const db = require("../../db"); // Import the database connection
@@ -5,7 +6,10 @@ const moment = require('moment');
 
 //Get all Patients from patient table
 router.get("/", async (req, res) => {
+    
+    
     const query = 'SELECT * FROM patient'; // Adjust the query based on your schema
+    
     try {
         const [patients] = await db.execute(query);
         res.json(patients);
@@ -61,7 +65,7 @@ router.get("/dateRange", async (req, res) => {
     }
 
     // SQL query with parameterized inputs to prevent SQL injection
-    const query = `SELECT * FROM patient WHERE DateTStamp BETWEEN ? AND ? ORDER BY SecDateEntry ASC`;
+    const query = `SELECT * FROM patient WHERE DateFirstVisit BETWEEN ? AND ? ORDER BY SecDateEntry ASC`;
 
     try {
         const [patients] = await db.execute(query, [moment(startDate).utc().set('hour', 5).set('minute', 0).set('second', 0).set('millisecond', 0).toISOString(), moment(endDate).utc().set('hour', 5).set('minute', 0).set('second', 0).set('millisecond', 0).toISOString()]);
