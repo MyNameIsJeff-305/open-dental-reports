@@ -10,6 +10,13 @@ router.use("/api", apiRouter);
 // If current user session is not valid, set req.user to null
 router.use(restoreUser);
 
+router.get("/api/csrf/restore", (req, res) => {
+    const csrfToken = req.csrfToken();
+    res.cookie("XSRF-TOKEN", csrfToken);
+    res.status(200).json({
+        'XSRF-Token': csrfToken
+    });
+});
 
 // Static routes
 // Serve React build files in production
