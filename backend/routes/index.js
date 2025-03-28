@@ -1,22 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { restoreUser } = require("../utils/auth");
 const apiRouter = require('./api');
 
-router.use("/api", apiRouter);
-
-// Connect restoreUser middleware to the API router
-// If current user session is valid, set req.user to the user in the database
-// If current user session is not valid, set req.user to null
-router.use(restoreUser);
-
-router.get("/api/csrf/restore", (req, res) => {
-    const csrfToken = req.csrfToken();
-    res.cookie("XSRF-TOKEN", csrfToken);
-    res.status(200).json({
-        'XSRF-Token': csrfToken
-    });
-});
+router.use('/api', apiRouter);
 
 // Static routes
 // Serve React build files in production
@@ -39,6 +25,17 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(
             path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
         );
+    });
+}
+
+// Add a XSRF-TOKEN cookie in development
+if (process.env.NODE_ENV !== 'production') {
+    router.get("/api/csrf/restore", (req, res) => {
+        const csrfToken = req.csrfToken();
+        res.cookie("XSRF-TOKEN", csrfToken);
+        res.status(200).json({
+            'XSRF-Token': csrfToken
+        });
     });
 }
 
