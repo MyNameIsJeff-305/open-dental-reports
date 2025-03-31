@@ -1,7 +1,20 @@
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import './SideMenu.css';
+import { logoutThunk } from '../../store/sessionReducer';
 
 const SideMenu = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector(state => state.session.user);
+
+    console.log('User in SideMenu:', user);
+
+    const handleLogout = async () => {
+        await dispatch(logoutThunk());
+        navigate('/'); // Redirect to login or home after logout
+    }
+
     return (
         <div className="side-menu">
             <img className="main-image" src='/main_logo.png'/>
@@ -11,6 +24,9 @@ const SideMenu = () => {
                 {/* <li><Link className="menu-item" to="/appointments">Appointments</Link></li>
                 <li><Link className="menu-item" to="/settings">Settings</Link></li> */}
             </ul>
+            <div className='logout-button'>
+                <button className='logout-btn' onClick={handleLogout}>Logout</button>
+            </div>
         </div>
     );
 };

@@ -1,5 +1,6 @@
 /* SideMenu.css */
 .side-menu {
+    justify-content: space-between; /* Space between items */
     width: 240px;               /* Set the width of the side menu */
     background-color: #55299a;  /* Dark background color */
     color: #ecf0f1;             /* Light text color */
@@ -39,9 +40,23 @@
     border-top: 1px solid #34495e; /* Add a border between menu items */
 }
 
-.main-image {
-    padding: 20px 20px 0 0;
-    margin-left: 20px;
-    width: 80%;
-    object-fit: cover;
+.logout-button {
+    margin-top: auto;           /* Push the logout button to the bottom */
+    padding: 40px 20px;         /* Padding around the logout button */
+}
+
+.logout-btn {
+    background-color: #2980b9;  /* Logout button background color */
+    color: #ecf0f1;             /* Logout button text color */
+    padding: 5px 20px;
+    border: none;         /* Padding around the logout button */
+    text-align: center;         /* Center the text in the button */
+    text-decoration: none;      /* Remove underline from the link */
+    font-size: 16px;            /* Font size for the logout button */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.logout-btn:hover {
+    background-color: #3498db;  /* Hover background color for the logout button */
+    color: #ffffff;             /* Change text color on hover */
 }
