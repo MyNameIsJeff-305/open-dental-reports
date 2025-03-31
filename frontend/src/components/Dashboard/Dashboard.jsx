@@ -8,12 +8,9 @@ import dayjs from 'dayjs';
 
 import Grid from '@mui/material/Grid2';
 import { DataGrid } from '@mui/x-data-grid';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Box } from '@mui/system';
-import { Typography } from '@mui/material';
-
+import { Box, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/style.css';
 
 import AgeGroupChart from './AgeGroupChart';
 import ProcByType from './ProcByType';
@@ -24,7 +21,8 @@ import './Dashboard.css';
 const Dashboard = () => {
     const [startDate, setStartDate] = useState(dayjs().startOf('week'));
     const [endDate, setEndDate] = useState(dayjs().endOf('week'));
-    const [error, setErrors] = useState({});
+    const [selectedRange, setSelectedRange] = useState(undefined);
+    const [openModal, setOpenModal] = useState(false);
 
     const dashboard = useSelector(state => state.dashboard.dashboard);
     const patients = useSelector(state => state.patient.patients);
@@ -33,32 +31,17 @@ const Dashboard = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const newErrors = {};
-
-        if (dayjs(endDate).isBefore(startDate)) {
-            setStartDate(dayjs().startOf('week'));
-            setEndDate(dayjs().endOf('week'));
-        }
-
-        setErrors(newErrors);
-    }, [startDate, endDate]);
-
-    // Fetch dashboard, patients, and procedures based on selected date range
-    useEffect(() => {
-        setErrors({});
         dispatch(fetchPatientsByDateRange(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
         dispatch(fetchProceduresByDateRange(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
-    }, [dispatch, startDate, endDate]); // Re-run when 'dateRange' changes
+    }, [dispatch, startDate, endDate]);
 
-    if (!dashboard || !patients || !procedures) return (
-        <div className="loading">
-            <h1>Loading...</h1>
-        </div>
-    );
-
-    const filteredPatients = patients.filter(patient => moment(patient.SecDateEntry).isBetween(startDate, endDate));
-
-    console.log(patients, "THIS IS FILTERED");
+    if (!dashboard || !patients || !procedures) {
+        return (
+            <div className="loading">
+                <h1>Loading...</h1>
+            </div>
+        );
+    }
 
     const getPatientsByDay = (patients) => {
         const patientsByDay = {};
@@ -81,19 +64,17 @@ const Dashboard = () => {
 
         patientsByDay.forEach((patient) => {
             const dayIndex = dayjs(patient.day).diff(startDate, 'days');
-            periodData[dayIndex] = patient.count;
+            if (dayIndex >= 0 && dayIndex < periodData.length) {
+                periodData[dayIndex] = patient.count;
+            }
         });
 
         return periodData;
     };
 
     const totalNewPatients = () => {
-        let total = 0;
-        getPeriodDataPatients(getPatientsByDay(patients)).forEach((day) => {
-            total += day;
-        });
-        return total;
-    }
+        return getPeriodDataPatients(getPatientsByDay(patients)).reduce((a, b) => a + b, 0);
+    };
 
     const getProceduresByDay = (procedures) => {
         const proceduresByDay = {};
@@ -115,11 +96,12 @@ const Dashboard = () => {
     const getPeriodDataProcedures = (proceduresByDay) => {
         const periodData = Array(dayjs(endDate).diff(startDate, 'days') + 1).fill(0);
 
-
         proceduresByDay.forEach((procedure) => {
-            const dayIndex = dayjs(procedure.day).diff(startDate, "days");
-            periodData[dayIndex] = procedure.count;
-        })
+            const dayIndex = dayjs(procedure.day).diff(startDate, 'days');
+            if (dayIndex >= 0 && dayIndex < periodData.length) {
+                periodData[dayIndex] = procedure.count;
+            }
+        });
 
         return periodData;
     };
@@ -136,31 +118,23 @@ const Dashboard = () => {
 
         patients.forEach(patient => {
             const age = moment().diff(patient.Birthdate, 'years');
-            if (age <= 18) {
-                ageGroups["0-18"]++;
-            } else if (age <= 30) {
-                ageGroups["19-30"]++;
-            } else if (age <= 40) {
-                ageGroups["31-40"]++;
-            } else if (age <= 50) {
-                ageGroups["41-50"]++;
-            } else if (age <= 60) {
-                ageGroups["51-60"]++;
-            } else {
-                ageGroups["65+"]++;
-            }
+            if (age <= 18) ageGroups["0-18"]++;
+            else if (age <= 30) ageGroups["19-30"]++;
+            else if (age <= 40) ageGroups["31-40"]++;
+            else if (age <= 50) ageGroups["41-50"]++;
+            else if (age <= 60) ageGroups["51-60"]++;
+            else ageGroups["65+"]++;
         });
 
         return ageGroups;
-    }
+    };
 
-    const getAgeGroupsData = (ageGroups) => {
-        const data = [];
-        for (let i = 0; i < Object.keys(ageGroups).length; i++) {
-            data.push({ id: i + 1, value: Object.values(ageGroups)[i], label: Object.keys(ageGroups)[i] });
-        }
-        return data;
-    }
+    const getAgeGroupsData = (ageGroups) =>
+        Object.entries(ageGroups).map(([label, value], index) => ({
+            id: index + 1,
+            value,
+            label
+        }));
 
     const getProceduresByName = (procedures) => {
         const proceduresByName = {};
@@ -173,26 +147,18 @@ const Dashboard = () => {
             proceduresByName[name]++;
         });
 
-        return Object.keys(proceduresByName).map(name => ({
+        return Object.entries(proceduresByName).map(([name, count]) => ({
             name,
-            count: proceduresByName[name]
+            count
         }));
     };
 
-    const getProceduresData = (filteredProcedures) => {
-        const data = [];
-        let counter = 1;
-        for (let procedure of filteredProcedures) {
-            data.push({
-                id: counter,
-                value: procedure.count,
-                label: procedure.name
-            });
-            counter++;
-        }
-
-        return data;
-    }
+    const getProceduresData = (filteredProcedures) =>
+        filteredProcedures.map((procedure, index) => ({
+            id: index + 1,
+            value: procedure.count,
+            label: procedure.name
+        }));
 
     const CARDS_DATA = [
         {
@@ -209,30 +175,12 @@ const Dashboard = () => {
         },
     ];
 
-    const startDateChange = (newValue) => {
-        if (dayjs(newValue).isAfter(endDate)) {
-            setErrors({ invalidRange: "Invalid date range" });
-            return;
-        }
-        setStartDate(newValue)
-    }
-
-    const endDateChange = (newValue) => {
-        if (dayjs(newValue).isBefore(startDate)) {
-            setErrors({ invalidRange: "Invalid date range" });
-            return;
-        }
-        setEndDate(newValue);
-    }
-
-    const ptRows = patients.map(patient => {
-        return {
-            id: patient.PatNum,
-            first_name: patient.FName,
-            last_name: patient.LName,
-            dob: moment(patient.Birthdate).format('L')
-        }
-    });
+    const ptRows = patients.map(patient => ({
+        id: patient.PatNum,
+        first_name: patient.FName,
+        last_name: patient.LName,
+        dob: moment(patient.Birthdate).format('L')
+    }));
 
     const ptColumns = [
         { field: 'id', headerName: 'ID', width: 150 },
@@ -241,19 +189,13 @@ const Dashboard = () => {
         { field: 'dob', headerName: 'Date of Birth', width: 150 }
     ];
 
-    const prRows = () => {
-        const result = [];
-        for (let i = 0; i < procedures.length; i++) {
-            result.push({
-                id: i + 1,
-                name: procedures[i].procedure_name,
-                code: procedures[i].procedure_code,
-                date: dayjs(procedures[i].procedure_date).format('MM/DD/YYYY'),
-                patient: procedures[i].first_name + ' ' + procedures[i].last_name
-            });
-        }
-        return result;
-    }
+    const prRows = procedures.map((p, i) => ({
+        id: i + 1,
+        name: p.procedure_name,
+        code: p.procedure_code,
+        date: dayjs(p.procedure_date).format('MM/DD/YYYY'),
+        patient: `${p.first_name} ${p.last_name}`
+    }));
 
     const prColumns = [
         { field: 'name', headerName: 'Procedure Name', width: 150 },
@@ -268,33 +210,14 @@ const Dashboard = () => {
                 <Typography component="h1" variant="h4" sx={{ mb: 2 }}>
                     Dashboard
                 </Typography>
-                <div className='date-picker-container'>
-                    <div className='date-picker'>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label="Start Date"
-                                value={startDate}
-                                onChange={startDateChange}
-                            />
-                            <DatePicker
-                                label="End Date"
-                                value={endDate}
-                                onChange={endDateChange}
-                            />
-                        </LocalizationProvider>
-                    </div>
-                    <div className='error-msg'>
-                        {error.invalidRange && <p>{error.invalidRange}</p>}
-                    </div>
-                </div>
+
+                <Button variant="contained" onClick={() => setOpenModal(true)}>
+                    Select Date Range
+                </Button>
             </div>
+
             <div className="dashboard">
-                <Grid
-                    container
-                    spacing={2}
-                    columns={12}
-                    sx={{ mb: (theme) => theme.spacing(2) }}
-                >
+                <Grid container spacing={2} columns={12} sx={{ mb: 2 }}>
                     {CARDS_DATA.map((card, index) => (
                         <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }}>
                             <StatCard
@@ -313,39 +236,55 @@ const Dashboard = () => {
                         <ProcByType data={getProceduresData(getProceduresByName(procedures))} />
                     </Grid>
                 </Grid>
-                <Grid
-                    container
-                    display={"flex"}
-                    alignContent={"space-between"}
-                    justifyContent={"space-between"}
-                    width={"100%"}
-                >
-                    <Grid width={"50%"} height={"94%"} paddingRight={"10px"}>
-                        <Typography component="h3" variant="h6">
-                            New Patients
-                        </Typography>
+
+                <Grid container display="flex" justifyContent="space-between" width="100%">
+                    <Grid width="50%" paddingRight="10px">
+                        <Typography component="h3" variant="h6">New Patients</Typography>
                         <DataGrid
                             rows={ptRows}
                             columns={ptColumns}
                             pageSizeOptions={[5, 10, 20, 50, 100]}
-                            loading= {ptColumns.length === 0}
                             sx={{ height: 520 }}
                         />
                     </Grid>
-                    <Grid width={"50%"} height={"94%"} paddingLeft={"10px"}>
-                        <Typography component="h3" variant="h6">
-                            Procedures
-                        </Typography>
+                    <Grid width="50%" paddingLeft="10px">
+                        <Typography component="h3" variant="h6">Procedures</Typography>
                         <DataGrid
-                            rows={prRows()}
+                            rows={prRows}
                             columns={prColumns}
                             pageSizeOptions={[5, 10, 20, 50, 100]}
-                            loading= {prColumns.length === 0}
                             sx={{ height: 520 }}
                         />
                     </Grid>
                 </Grid>
             </div>
+
+            {/* Floating Modal for Date Range Picker */}
+            <Dialog open={openModal} onClose={() => setOpenModal(false)}>
+                <DialogTitle>Select Date Range</DialogTitle>
+                <DialogContent>
+                    <DayPicker
+                        mode="range"
+                        selected={selectedRange}
+                        onSelect={setSelectedRange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenModal(false)}>Cancel</Button>
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            if (selectedRange?.from && selectedRange?.to) {
+                                setStartDate(dayjs(selectedRange.from));
+                                setEndDate(dayjs(selectedRange.to));
+                            }
+                            setOpenModal(false);
+                        }}
+                    >
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
