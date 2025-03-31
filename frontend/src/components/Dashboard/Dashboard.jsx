@@ -16,6 +16,7 @@ import AgeGroupChart from './AgeGroupChart';
 import ProcByType from './ProcByType';
 import StatCard from './StatCard';
 
+import { FaCalendar } from "react-icons/fa";
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -212,7 +213,8 @@ const Dashboard = () => {
                 </Typography>
 
                 <Button variant="contained" onClick={() => setOpenModal(true)}>
-                    Select Date Range
+                    <FaCalendar style={{ marginRight: '5px' }} />
+                    {(startDate || endDate) ? `${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}` : "Select Date Range"}
                 </Button>
             </div>
 
