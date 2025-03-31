@@ -36,6 +36,13 @@
     margin-top: 0;              /* Remove margin from the top of the first link */
 }
 
+.main-image {
+    width: 75%;                /* Full width for the image */
+    height: auto;    
+    padding: 20px;           /* Maintain aspect ratio */
+    margin-bottom: 20px;        /* Space below the image */
+}
+
 .side-menu .menu-item + .menu-item {
     border-top: 1px solid #34495e; /* Add a border between menu items */
 }
