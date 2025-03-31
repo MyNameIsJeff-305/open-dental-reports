@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { fetchPatientsByDateRange } from '../../store/patientReducer';
 import { fetchProceduresByDateRange } from '../../store/proceduresReducer';
+import { OrbitProgress } from 'react-loading-indicators';
 
 import moment from 'moment';
 import dayjs from 'dayjs';
@@ -38,8 +39,8 @@ const Dashboard = () => {
 
     if (!dashboard || !patients || !procedures) {
         return (
-            <div className="loading">
-                <h1>Loading...</h1>
+            <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <OrbitProgress variant="track-disc" dense color="#c431cc" size="medium" text="" textColor="" />
             </div>
         );
     }
@@ -141,7 +142,7 @@ const Dashboard = () => {
         const proceduresByName = {};
 
         procedures.forEach(procedure => {
-            const name = procedure.procedure_name;
+            let name = procedure.procedure_name;
             if (!proceduresByName[name]) {
                 proceduresByName[name] = 0;
             }
