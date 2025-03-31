@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import dashboardReducer from './dashboardReducer';
 import patientReducer from './patientReducer';
 import procedureReducer from './proceduresReducer';
+import sessionReducer from './sessionReducer';
 
 const rootReducer = combineReducers({
     dashboard: dashboardReducer,
     patient: patientReducer,
-    procedure: procedureReducer
+    procedure: procedureReducer,
+    session: sessionReducer
 });
 
 let enhancer;
