@@ -25,6 +25,7 @@ const Dashboard = () => {
     const [endDate, setEndDate] = useState(dayjs().endOf('week'));
     const [selectedRange, setSelectedRange] = useState(undefined);
     const [openModal, setOpenModal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const dashboard = useSelector(state => state.dashboard.dashboard);
     const patients = useSelector(state => state.patient.patients);
@@ -33,11 +34,16 @@ const Dashboard = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchPatientsByDateRange(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
-        dispatch(fetchProceduresByDateRange(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
+        async function fetchData() {
+            setLoading(true);
+            await dispatch(fetchPatientsByDateRange(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
+            await dispatch(fetchProceduresByDateRange(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
+            setLoading(false);
+        }
+        fetchData();
     }, [dispatch, startDate, endDate]);
 
-    if (!dashboard || !patients || !procedures) {
+    if (loading) {
         return (
             <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <OrbitProgress variant="track-disc" dense color="#c431cc" size="medium" text="" textColor="" />
