@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import './SideMenu.css';
-import { fetchSession, logoutThunk } from '../../store/sessionReducer';
+import { logoutThunk } from '../../store/sessionReducer';
 
 const SideMenu = () => {
     const dispatch = useDispatch();
