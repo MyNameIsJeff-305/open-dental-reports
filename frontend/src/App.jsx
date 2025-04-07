@@ -30,6 +30,14 @@ function Layout() {
     setIsButtonDisabled(credential.length < 4 || password.length < 6);
   }, [credential, password]);
 
+  const handleDemoLogin = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    return dispatch(loginThunk({ credential: "demoUser1", password: "password" }))
+  }
+
+
   const handleLogin = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -39,6 +47,7 @@ function Layout() {
     setErrors({});
 
     const response = await dispatch(loginThunk({ credential, password }));
+
 
     if (response?.error) {
       setErrors({ message: response.error });
@@ -60,8 +69,11 @@ function Layout() {
         </main>
       ) : (
         <div className='login-container'>
-          <div className='login-form'>
+          <div className='login-form-cont'>
             <form onSubmit={handleLogin} className='login-form'>
+              <div className='login-logo'>
+                <img src="/main_logo.png" alt="Logo" />
+              </div>
               <h1>Log In</h1>
               {errors.message && (
                 <p className='error-message'>{errors.message}</p>
@@ -93,6 +105,11 @@ function Layout() {
                 {errors.password && (
                   <p className='error-message'>{errors.password}</p>
                 )}
+              </div>
+              {/* Demo Login link*/}
+
+              <div className='demo-login'>
+                <a onClick={handleDemoLogin}>Demo Login</a>
               </div>
               <button type="submit" id='login-button' disabled={isButtonDisabled}>Log In</button>
             </form>
