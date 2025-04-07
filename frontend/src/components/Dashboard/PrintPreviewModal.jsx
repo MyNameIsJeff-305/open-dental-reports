@@ -36,10 +36,11 @@ const PrintPreviewModal = ({
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg">
-            <DialogTitle>Print Preview</DialogTitle>
+            <DialogTitle>Open Dental Report</DialogTitle>
             <DialogContent>
                 <div ref={printRef} style={{padding: '20px'}}>
                     {/* Preview Layout */}
+                    <p>{CARDS_DATA[0].interval}</p>
                     <Grid container spacing={2} columns={12} sx={{ mb: 2 }} justifyContent={'space-between'}>
                         {CARDS_DATA.map((card, index) => (
                             <Grid key={index} item width={'50%'} padding={1}>
