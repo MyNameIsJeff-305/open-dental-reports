@@ -39,29 +39,10 @@
     text-align: right;
 }
 
-@media print {
-    body * {
-        visibility: hidden;
-    }
-
-    .print-container,
-    .print-container * {
-        visibility: visible;
-    }
-
-    .print-container {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-
-    .page-break {
-        display: block;
-        page-break-before: always;
-    }
-
-    .no-page-break {
-        page-break-inside: avoid;
-    }
+.dashboard-header-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 10px;
 }
