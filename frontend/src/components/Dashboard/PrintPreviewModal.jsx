@@ -108,10 +108,10 @@ const PrintPreviewModal = ({
                             <Typography component="h3" variant="h6">New Patients</Typography>
                             {renderTable(ptColumns, ptRows)}
                         </Grid>
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <Typography component="h3" variant="h6">Procedures</Typography>
                             {renderTable(prColumns, prRows)}
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </div>
             </DialogContent>
