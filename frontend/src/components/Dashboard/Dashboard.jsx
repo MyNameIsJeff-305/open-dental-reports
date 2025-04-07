@@ -45,13 +45,13 @@ const Dashboard = () => {
         fetchData();
     }, [dispatch, startDate, endDate]);
 
-    // if (loading) {
-    //     return (
-    //         <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    //             <OrbitProgress variant="track-disc" dense color="#c431cc" size="medium" text="" textColor="" />
-    //         </div>
-    //     );
-    // }
+    if (loading) {
+        return (
+            <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <OrbitProgress variant="track-disc" dense color="#c431cc" size="medium" text="" textColor="" />
+            </div>
+        );
+    }
 
     const handleOpenPrintPreview = () => {
         setOpenPrintPreview(true);
