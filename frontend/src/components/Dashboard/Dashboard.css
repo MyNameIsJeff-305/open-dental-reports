@@ -39,22 +39,29 @@
     text-align: right;
 }
 
-/* Hide all elements by default when printing */
 @media print {
     body * {
         visibility: hidden;
     }
 
-    /* Display the dashboard component only */
-    .dashboard-container,
-    .dashboard-container * {
+    .print-container,
+    .print-container * {
         visibility: visible;
     }
 
-    .dashboard-container {
+    .print-container {
         position: absolute;
         left: 0;
         top: 0;
         width: 100%;
+    }
+
+    .page-break {
+        display: block;
+        page-break-before: always;
+    }
+
+    .no-page-break {
+        page-break-inside: avoid;
     }
 }

@@ -42,13 +42,13 @@ const Dashboard = () => {
         fetchData();
     }, [dispatch, startDate, endDate]);
 
-    // if (loading) {
-    //     return (
-    //         <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    //             <OrbitProgress variant="track-disc" dense color="#c431cc" size="medium" text="" textColor="" />
-    //         </div>
-    //     );
-    // }
+    if (loading) {
+        return (
+            <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <OrbitProgress variant="track-disc" dense color="#c431cc" size="medium" text="" textColor="" />
+            </div>
+        );
+    }
 
     const getPatientsByDay = (patients) => {
         const patientsByDay = {};
@@ -212,12 +212,11 @@ const Dashboard = () => {
     ];
 
     return (
-        <Box sx={{ width: '100%' }} className="dashboard-container">
+        <Box sx={{ width: '100%' }} className="print-container">
             <div className='dashboard-header'>
                 <Typography component="h1" variant="h4" sx={{ mb: 2 }}>
                     Dashboard
                 </Typography>
-
                 <Button variant="contained" onClick={() => setOpenModal(true)}>
                     <FaCalendar style={{ marginRight: '5px' }} />
                     {(startDate || endDate) ? `${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}` : "Select Date Range"}
@@ -228,7 +227,7 @@ const Dashboard = () => {
             </div>
 
             <div className="dashboard">
-                <Grid container spacing={2} columns={12} sx={{ mb: 2 }}>
+                <Grid container spacing={2} columns={12} sx={{ mb: 2 }} className="no-page-break">
                     {CARDS_DATA.map((card, index) => (
                         <Grid key={index} item xs={12} sm={6} lg={3}>
                             <StatCard
@@ -248,17 +247,22 @@ const Dashboard = () => {
                     </Grid>
                 </Grid>
 
-                <Grid container display="flex" justifyContent="space-between" width="100%">
-                    <Grid item width="50%" paddingRight="10px">
-                        <Typography component="h3" variant="h6">New Patients</Typography>
-                        <DataGrid
-                            rows={ptRows}
-                            columns={ptColumns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5, 10, 20, 50, 100]}
-                            sx={{ height: 520 }}
-                        />
+                <div className="page-break">
+                    <Grid container display="flex" justifyContent="space-between" width="100%">
+                        <Grid item width="50%" paddingRight="10px">
+                            <Typography component="h3" variant="h6">New Patients</Typography>
+                            <DataGrid
+                                rows={ptRows}
+                                columns={ptColumns}
+                                pageSize={5}
+                                rowsPerPageOptions={[5, 10, 20, 50, 100]}
+                                sx={{ height: 520 }}
+                            />
+                        </Grid>
                     </Grid>
+                </div>
+
+                <div className="page-break">
                     <Grid item width="50%" paddingLeft="10px">
                         <Typography component="h3" variant="h6">Procedures</Typography>
                         <DataGrid
@@ -269,10 +273,9 @@ const Dashboard = () => {
                             sx={{ height: 520 }}
                         />
                     </Grid>
-                </Grid>
+                </div>
             </div>
 
-            {/* Floating Modal for Date Range Picker */}
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>
                 <DialogTitle>Select Date Range</DialogTitle>
                 <DialogContent>
@@ -284,16 +287,13 @@ const Dashboard = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenModal(false)}>Cancel</Button>
-                    <Button
-                        variant="contained"
-                        onClick={() => {
-                            if (selectedRange?.from && selectedRange?.to) {
-                                setStartDate(dayjs(selectedRange.from));
-                                setEndDate(dayjs(selectedRange.to));
-                            }
-                            setOpenModal(false);
-                        }}
-                    >
+                    <Button variant="contained" onClick={() => {
+                        if (selectedRange?.from && selectedRange?.to) {
+                            setStartDate(dayjs(selectedRange.from));
+                            setEndDate(dayjs(selectedRange.to));
+                        }
+                        setOpenModal(false);
+                    }}>
                         Confirm
                     </Button>
                 </DialogActions>
