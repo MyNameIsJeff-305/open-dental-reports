@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -6,7 +6,10 @@ import {
     DialogActions,
     Button,
     Grid,
-    Typography
+    Typography,
+    Checkbox,
+    FormGroup,
+    FormControlLabel
 } from '@mui/material';
 import StatCard from './StatCard';
 import AgeGroupChart from './AgeGroupChart';
@@ -26,6 +29,12 @@ const PrintPreviewModal = ({
     procByTypeData
 }) => {
     const printRef = useRef();
+    const [printOptions, setPrintOptions] = useState({
+        cards: true,
+        charts: true,
+        newPatients: true,
+        procedures: true,
+    });
 
     const handlePrint = () => {
         window.print();
@@ -77,45 +86,104 @@ const PrintPreviewModal = ({
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg">
             <DialogTitle>Open Dental Report</DialogTitle>
             <DialogContent>
-                <div ref={printRef} style={{ padding: '20px' }}>
-                    {/* Preview Layout */}
-                    <p>{CARDS_DATA[0].interval}</p>
-                    <Grid container spacing={2} columns={12} sx={{ mb: 2 }} justifyContent="space-between">
-                        {CARDS_DATA.map((card, index) => (
-                            <Grid key={index} item width="50%" padding={1}>
-                                <StatCard
-                                    title={card.title}
-                                    value={card.value}
-                                    interval={card.interval}
-                                    trend="up"
-                                    data={card.data}
+                {/* Checkbox selection (will not print) */}
+                <div className="no-print" style={{ padding: '10px', marginBottom: '20px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                    <FormGroup row>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={printOptions.cards}
+                                    onChange={(e) =>
+                                        setPrintOptions({ ...printOptions, cards: e.target.checked })
+                                    }
                                 />
-                            </Grid>
-                        ))}
-                    </Grid>
+                            }
+                            label="Stat Cards"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={printOptions.charts}
+                                    onChange={(e) =>
+                                        setPrintOptions({ ...printOptions, charts: e.target.checked })
+                                    }
+                                />
+                            }
+                            label="Charts"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={printOptions.newPatients}
+                                    onChange={(e) =>
+                                        setPrintOptions({ ...printOptions, newPatients: e.target.checked })
+                                    }
+                                />
+                            }
+                            label="New Patients Table"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={printOptions.procedures}
+                                    onChange={(e) =>
+                                        setPrintOptions({ ...printOptions, procedures: e.target.checked })
+                                    }
+                                />
+                            }
+                            label="Procedures Table"
+                        />
+                    </FormGroup>
+                </div>
 
-                    <Grid container spacing={2} columns={12} sx={{ mb: 2 }}>
-                        <Grid item width="50%" padding={1}>
-                            <AgeGroupChart data={ageGroupData} />
+                {/* Print preview area */}
+                <div ref={printRef} style={{ padding: '20px' }}>
+                    {/* Always show the interval */}
+                    <p>{CARDS_DATA[0].interval}</p>
+                    {printOptions.cards && (
+                        <Grid container spacing={2} columns={12} sx={{ mb: 2 }} justifyContent="space-between">
+                            {CARDS_DATA.map((card, index) => (
+                                <Grid key={index} item width="50%" padding={1}>
+                                    <StatCard
+                                        title={card.title}
+                                        value={card.value}
+                                        interval={card.interval}
+                                        trend="up"
+                                        data={card.data}
+                                    />
+                                </Grid>
+                            ))}
                         </Grid>
-                        <Grid item width="50%" padding={1}>
-                            <ProcByType data={procByTypeData} />
+                    )}
+
+                    {printOptions.charts && (
+                        <Grid container spacing={2} columns={12} sx={{ mb: 2 }}>
+                            <Grid item width="50%" padding={1}>
+                                <AgeGroupChart data={ageGroupData} />
+                            </Grid>
+                            <Grid item width="50%" padding={1}>
+                                <ProcByType data={procByTypeData} />
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    )}
 
                     <Grid container display="flex" justifyContent="space-between" width="100%" rowGap={2} columnGap={2}>
-                        <Grid item xs={12}>
-                            <Typography component="h3" variant="h6">New Patients</Typography>
-                            {renderTable(ptColumns, ptRows)}
-                        </Grid>
-                        {/* <Grid item xs={12}>
-                            <Typography component="h3" variant="h6">Procedures</Typography>
-                            {renderTable(prColumns, prRows)}
-                        </Grid> */}
+                        {printOptions.newPatients && (
+                            <Grid item xs={12}>
+                                <Typography component="h3" variant="h6">New Patients</Typography>
+                                {renderTable(ptColumns, ptRows)}
+                            </Grid>
+                        )}
+                        {printOptions.procedures && (
+                            <Grid item xs={12}>
+                                <Typography component="h3" variant="h6">Procedures</Typography>
+                                {renderTable(prColumns, prRows)}
+                            </Grid>
+                        )}
                     </Grid>
                 </div>
             </DialogContent>
-            {/* Apply the no-print class to hide buttons during printing */}
+            {/* Actions section (hidden in print via the no-print class) */}
             <DialogActions className="no-print">
                 <Button className="print-button" variant="contained" onClick={handlePrint}>
                     Print
