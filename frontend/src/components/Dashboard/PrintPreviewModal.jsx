@@ -12,6 +12,8 @@ import StatCard from './StatCard';
 import AgeGroupChart from './AgeGroupChart';
 import ProcByType from './ProcByType';
 
+import './Dashboard.css';
+
 const PrintPreviewModal = ({
     open,
     onClose,
@@ -113,9 +115,14 @@ const PrintPreviewModal = ({
                     </Grid>
                 </div>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button variant="contained" onClick={handlePrint}>Print</Button>
+            {/* Apply the no-print class to hide buttons during printing */}
+            <DialogActions className="no-print">
+                <Button className="print-button" variant="contained" onClick={handlePrint}>
+                    Print
+                </Button>
+                <Button className="cancel-button" onClick={onClose}>
+                    Cancel
+                </Button>
             </DialogActions>
         </Dialog>
     );

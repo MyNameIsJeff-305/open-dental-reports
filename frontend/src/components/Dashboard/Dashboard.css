@@ -46,3 +46,9 @@
     align-items: center;
     column-gap: 10px;
 }
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
