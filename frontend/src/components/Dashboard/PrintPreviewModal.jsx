@@ -69,7 +69,6 @@ const PrintPreviewModal = ({
                             <DataGrid
                                 rows={ptRows}
                                 columns={ptColumns}
-                                sx={{ height: 520 }}
                             />
                         </Grid>
                         <Grid width="100%">
@@ -77,7 +76,6 @@ const PrintPreviewModal = ({
                             <DataGrid
                                 rows={prRows}
                                 columns={prColumns}
-                                sx={{ height: 520 }}
                             />
                         </Grid>
                     </Grid>
