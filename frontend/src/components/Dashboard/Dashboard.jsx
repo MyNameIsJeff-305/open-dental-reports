@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { fetchPatientsByDateRange } from '../../store/patientReducer';
 import { fetchProceduresByDateRange } from '../../store/proceduresReducer';
 import { OrbitProgress } from 'react-loading-indicators';
+import PrintPreviewModal from './PrintPreviewModal';
 
 import moment from 'moment';
 import dayjs from 'dayjs';
@@ -27,6 +28,8 @@ const Dashboard = () => {
     const [openModal, setOpenModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const [openPrintPreview, setOpenPrintPreview] = useState(false);
+
     const patients = useSelector(state => state.patient.patients);
     const procedures = useSelector(state => state.procedure.procedures);
 
@@ -49,6 +52,10 @@ const Dashboard = () => {
     //         </div>
     //     );
     // }
+
+    const handleOpenPrintPreview = () => {
+        setOpenPrintPreview(true);
+    };
 
     const getPatientsByDay = (patients) => {
         const patientsByDay = {};
@@ -218,8 +225,8 @@ const Dashboard = () => {
                     Dashboard
                 </Typography>
                 <div className='dashboard-header-buttons'>
-                    <Button variant="contained" onClick={() => window.print()}>
-                        <FaPrint style={{ marginRight: '5px' }}/>
+                    <Button variant="contained" onClick={handleOpenPrintPreview}>
+                        <FaPrint style={{ marginRight: '5px' }} />
                         Print
                     </Button>
                     <Button variant="contained" onClick={() => setOpenModal(true)}>
@@ -298,6 +305,20 @@ const Dashboard = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Print Preview Modal */}
+            <PrintPreviewModal
+                open={openPrintPreview}
+                onClose={() => setOpenPrintPreview(false)}
+                CARDS_DATA={CARDS_DATA}
+                ptRows={ptRows}
+                ptColumns={ptColumns}
+                prRows={prRows}
+                prColumns={prColumns}
+                ageGroupData={getAgeGroupsData(getAgeGroups(patients))}
+                procByTypeData={getProceduresData(getProceduresByName(procedures))}
+            // pass any additional props your PrintPreviewModal might need
+            />
         </Box>
     );
 };
