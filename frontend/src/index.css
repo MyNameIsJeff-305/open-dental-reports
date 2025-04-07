@@ -180,7 +180,7 @@ body {
     flex-direction: column;
     align-items: start;
     margin-top: 1rem;
-    color: var(--button-text-color);
+    color: #f9f9f9;
     border: none;
     border-radius: 4px;
     cursor: pointer;
