@@ -69,6 +69,7 @@ const PrintPreviewModal = ({
                             <DataGrid
                                 rows={ptRows}
                                 columns={ptColumns}
+                                autoHeight
                             />
                         </Grid>
                         <Grid width="100%">
@@ -76,6 +77,7 @@ const PrintPreviewModal = ({
                             <DataGrid
                                 rows={prRows}
                                 columns={prColumns}
+                                autoHeight
                             />
                         </Grid>
                     </Grid>
