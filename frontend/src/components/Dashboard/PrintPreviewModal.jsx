@@ -71,6 +71,7 @@ const PrintPreviewModal = ({
                                 rows={ptRows}
                                 columns={ptColumns}
                                 autoHeight
+                                autoPageSize
                             />
                         </Grid>
                         <Grid width="100%">
@@ -79,6 +80,7 @@ const PrintPreviewModal = ({
                                 rows={prRows}
                                 columns={prColumns}
                                 autoHeight
+                                autoPageSize
                             />
                         </Grid>
                     </Grid>
