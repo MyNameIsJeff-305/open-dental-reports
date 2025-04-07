@@ -8,12 +8,9 @@ import {
     Grid,
     Typography
 } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
 import StatCard from './StatCard';
 import AgeGroupChart from './AgeGroupChart';
 import ProcByType from './ProcByType';
-
-
 
 const PrintPreviewModal = ({
     open,
@@ -25,7 +22,6 @@ const PrintPreviewModal = ({
     prColumns,
     ageGroupData,
     procByTypeData
-    // Other props you need to render charts if required
 }) => {
     const printRef = useRef();
 
@@ -33,17 +29,58 @@ const PrintPreviewModal = ({
         window.print();
     };
 
+    // Helper function to render a table from columns and rows
+    const renderTable = (columns, rows) => {
+        return (
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
+                <thead>
+                    <tr>
+                        {columns.map((col) => (
+                            <th
+                                key={col.field}
+                                style={{
+                                    border: '1px solid #ddd',
+                                    padding: '8px',
+                                    textAlign: 'left',
+                                    backgroundColor: '#f2f2f2'
+                                }}
+                            >
+                                {col.headerName}
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows.map((row) => (
+                        <tr key={row.id}>
+                            {columns.map((col) => (
+                                <td
+                                    key={col.field}
+                                    style={{
+                                        border: '1px solid #ddd',
+                                        padding: '8px'
+                                    }}
+                                >
+                                    {row[col.field]}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        );
+    };
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg">
             <DialogTitle>Open Dental Report</DialogTitle>
             <DialogContent>
-                <div ref={printRef} style={{padding: '20px'}}>
+                <div ref={printRef} style={{ padding: '20px' }}>
                     {/* Preview Layout */}
                     <p>{CARDS_DATA[0].interval}</p>
-                    <Grid container spacing={2} columns={12} sx={{ mb: 2 }} justifyContent={'space-between'}>
+                    <Grid container spacing={2} columns={12} sx={{ mb: 2 }} justifyContent="space-between">
                         {CARDS_DATA.map((card, index) => (
-                            <Grid key={index} item width={'50%'} padding={1}>
+                            <Grid key={index} item width="50%" padding={1}>
                                 <StatCard
                                     title={card.title}
                                     value={card.value}
@@ -56,32 +93,22 @@ const PrintPreviewModal = ({
                     </Grid>
 
                     <Grid container spacing={2} columns={12} sx={{ mb: 2 }}>
-                        <Grid item width={'50%'} padding={1}>
+                        <Grid item width="50%" padding={1}>
                             <AgeGroupChart data={ageGroupData} />
                         </Grid>
-                        <Grid item width={'50%'} padding={1}>
+                        <Grid item width="50%" padding={1}>
                             <ProcByType data={procByTypeData} />
                         </Grid>
                     </Grid>
 
-                    <Grid container display="flex" justifyContent="space-between" width={'100%'} rowGap={2} columnGap={2}>
-                        <Grid width="100%">
+                    <Grid container display="flex" justifyContent="space-between" width="100%" rowGap={2} columnGap={2}>
+                        <Grid item xs={12}>
                             <Typography component="h3" variant="h6">New Patients</Typography>
-                            <DataGrid
-                                rows={ptRows}
-                                columns={ptColumns}
-                                autoHeight
-                                autoPageSize
-                            />
+                            {renderTable(ptColumns, ptRows)}
                         </Grid>
-                        <Grid width="100%">
+                        <Grid item xs={12}>
                             <Typography component="h3" variant="h6">Procedures</Typography>
-                            <DataGrid
-                                rows={prRows}
-                                columns={prColumns}
-                                autoHeight
-                                autoPageSize
-                            />
+                            {renderTable(prColumns, prRows)}
                         </Grid>
                     </Grid>
                 </div>
