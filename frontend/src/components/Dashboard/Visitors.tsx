@@ -45,7 +45,8 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
 
     
     const dataArray = dataInput.map((item: { count: number }) => item.count);
-    console.log('THIS IS dataInput', dataArray);
+    
+    const getXAxis = dataInput.map((item: { date: string }) => item.date);
 
     return (
         <Card variant="outlined" sx={{ width: '100%' }}>
@@ -75,7 +76,7 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
                     xAxis={[
                         {
                             scaleType: 'point',
-                            data,
+                            data: getXAxis,
                             tickInterval: (index, i) => (i + 1) % 5 === 0,
                         },
                     ]}
@@ -88,11 +89,7 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
                             stack: 'total',
                             area: true,
                             stackOrder: 'ascending',
-                            data: [
-                                300, 900, 600, 1200, 1500, 1800, 2400, 2100, 2700, 3000, 1800, 3300,
-                                3600, 3900, 4200, 4500, 3900, 4800, 5100, 5400, 4800, 5700, 6000,
-                                6300, 6600, 6900, 7200, 7500, 7800, 8100,
-                            ],
+                            data: dataArray,
                         }
                     ]}
                     height={250}
