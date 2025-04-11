@@ -305,7 +305,7 @@ const Dashboard = () => {
                         <VisitsPerDay data={visits[0]} />
                     </Grid>
                     <Grid size={6} sx={{ mb: 2 }}>
-                        <Visitors dataInput={getVisitsByDay()}/>
+                        <Visitors dataInput={getVisitsByDay()} total={visits[0].length}/>
                     </Grid>
                 </Grid>
 

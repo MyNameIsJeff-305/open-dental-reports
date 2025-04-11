@@ -32,8 +32,11 @@ export default function PageViewsBarChart({data}) {
         <Card variant="outlined" sx={{ width: '100%' }}>
             <CardContent>
                 <Typography component="h2" variant="subtitle2" gutterBottom>
-                    Visitors per Day
+                    Most Busy Days
                 </Typography>
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                        Most busy days of the week
+                    </Typography>
                 <Stack sx={{ justifyContent: 'space-between' }}>
                     <Stack
                         direction="row"
