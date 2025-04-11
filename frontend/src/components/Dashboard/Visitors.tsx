@@ -84,7 +84,7 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
                     series={[
                         {
                             id: 'direct',
-                            label: 'Direct',
+                            label: 'Visitors',
                             showMark: false,
                             curve: 'linear',
                             stack: 'total',
