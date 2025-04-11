@@ -170,10 +170,10 @@ const PrintPreviewModal = ({
                             <Grid item width="50%" padding={1}>
                                 <ProcByType data={procByTypeData} />
                             </Grid>
-                            <Grid size={6} sx={{ mb: 2 }}>
+                            <Grid item width="50%" padding={1}>
                                 <Visitors dataInput={getVisitsByDay} total={totalVisitors} />
                             </Grid>
-                            <Grid size={6} sx={{ mb: 2 }}>
+                            <Grid item width="50%" padding={1}>
                                 <VisitsPerDay data={dataVisitsPerDay} total={totalVisitsPerDay} />
                             </Grid>
                         </Grid>
