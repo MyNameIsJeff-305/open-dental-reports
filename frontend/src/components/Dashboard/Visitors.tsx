@@ -89,7 +89,6 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
                             curve: 'linear',
                             stack: 'total',
                             area: true,
-                            stackOrder: 'ascending',
                             data: dataArray,
                         }
                     ]}
