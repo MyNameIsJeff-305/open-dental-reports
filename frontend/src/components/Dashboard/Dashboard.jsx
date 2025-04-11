@@ -223,13 +223,16 @@ const Dashboard = () => {
     ];
 
     //Get the amount of visits per day
-    const getVisitsByDay = (v) => {
+    const getVisitsByDay = () => {
         const visitsByDay = {};
 
-        
+        if (!visits[0]) return {
+            day: "",
+            count: 0
+        };
 
-        v.forEach(vis => {
-            const day = moment(vis.date).format('MM/DD/YYYY');
+        visits[0].forEach(visit => {
+            const day = moment(visit.date).format('MM/DD/YYYY');
             if (!visitsByDay[day]) {
                 visitsByDay[day] = 0;
             }
@@ -285,10 +288,9 @@ const Dashboard = () => {
                     <Grid width={"50%"} paddingRight="10px">
                         <StatCard 
                             title="Daily Visitors"
-                            value={getVisitsByDay(visits[0]).reduce((a, b) => a + b.count, 0)}
                             interval={`${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}`}
                             trend={"up"}
-                            data={getVisitsByDay(visits[0])}
+                            data={getVisitsByDay()}
                         />
                     </Grid>
                 </Grid>
