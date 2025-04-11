@@ -5,6 +5,7 @@ const apptRoutes = require("./apptRoutes");
 const proceduresRoutes = require("./proceduresRoutes");
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
+const visitsRouter = require('./visitsRoutes.js');
 
 const { restoreUser } = require("../../utils/auth.js");
 router.use(restoreUser);
@@ -16,6 +17,7 @@ router.use("/appointments", apptRoutes);
 router.use("/procedures", proceduresRoutes);
 router.use("/users", usersRouter);
 router.use("/session", sessionRouter);
+router.use("/visits", visitsRouter);
 
 module.exports = router;
 
