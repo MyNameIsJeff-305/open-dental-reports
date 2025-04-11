@@ -46,9 +46,8 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
     
     const dataArray = dataInput.map((item: { count: number }) => item.count);
     
-    const getXAxis = dataInput.map((item: { date: string }) => item.date);
+    const getXAxis = dataInput.map((item: { day: string }) => item.day);
 
-    console.log('XXXXXXXX AXIS', dataInput);
 
     return (
         <Card variant="outlined" sx={{ width: '100%' }}>
