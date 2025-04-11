@@ -20,7 +20,7 @@ export default function PageViewsBarChart({data, total}) {
         const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const weekdayCounts = weekdays.map((day) => ({ weekday: day, count: 0 }));
 
-        data.forEach(({ date, count }) => {
+        data?.forEach(({ date, count }) => {
             const dayIndex = moment(date).day();
             weekdayCounts[dayIndex].count += 1;
         });
