@@ -249,7 +249,7 @@ const Dashboard = () => {
         return getVisitsByDay().reduce((a, b) => a + b.count, 0);
     }
 
-    console.log("VISITS", visitorsCount());
+    console.log("PATIENTS", getPeriodDataPatients(getPatientsByDay(patients)))
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -294,9 +294,12 @@ const Dashboard = () => {
                     <Grid width={"50%"} paddingRight="10px">
                         <StatCard 
                             title="Daily Visitors"
+                            value={visitorsCount()}
                             interval={`${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}`}
                             trend={"up"}
-                            data={getVisitsByDay()}
+                            data={getVisitsByDay().map((day) => {
+                                return day.count;
+                            })}
                         />
                     </Grid>
                 </Grid>
