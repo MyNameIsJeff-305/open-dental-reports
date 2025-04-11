@@ -28,13 +28,11 @@ export default function PageViewsBarChart({data}) {
         return weekdayCounts;
     }
 
-    console.log(getWeekdayCounts(data), "THIS IS WHAT I WANT");
-
     return (
         <Card variant="outlined" sx={{ width: '100%' }}>
             <CardContent>
                 <Typography component="h2" variant="subtitle2" gutterBottom>
-                    Page views and downloads
+                    Visitors per Day
                 </Typography>
                 <Stack sx={{ justifyContent: 'space-between' }}>
                     <Stack
@@ -45,14 +43,7 @@ export default function PageViewsBarChart({data}) {
                             gap: 1,
                         }}
                     >
-                        <Typography variant="h4" component="p">
-                            1.3M
-                        </Typography>
-                        <Chip size="small" color="error" label="-8%" />
                     </Stack>
-                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                        Page views and downloads for the last 6 months
-                    </Typography>
                 </Stack>
                 <BarChart
                     borderRadius={8}
@@ -62,7 +53,7 @@ export default function PageViewsBarChart({data}) {
                             {
                                 scaleType: 'band',
                                 categoryGapRatio: 0.5,
-                                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                             },
                         ] as any
                     }
