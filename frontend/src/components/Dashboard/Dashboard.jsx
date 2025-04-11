@@ -356,6 +356,10 @@ const Dashboard = () => {
                 prColumns={prColumns}
                 ageGroupData={getAgeGroupsData(getAgeGroups(patients))}
                 procByTypeData={getProceduresData(getProceduresByName(procedures))}
+                getVisitsByDay={getVisitsByDay()}
+                totalVisitors={visits[0].length}
+                dataVisitsPerDay={visits[0]}
+                totalVisitsPerDay={visits[0].length}
             // pass any additional props your PrintPreviewModal might need
             />
         </Box>

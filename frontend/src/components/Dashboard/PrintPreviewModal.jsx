@@ -28,7 +28,11 @@ const PrintPreviewModal = ({
     prRows,
     prColumns,
     ageGroupData,
-    procByTypeData
+    procByTypeData,
+    getVisitsByDay,
+    totalVisitors,
+    dataVisitsPerDay,
+    totalVisitsPerDay
 }) => {
     const printRef = useRef();
     const [printOptions, setPrintOptions] = useState({
@@ -160,17 +164,17 @@ const PrintPreviewModal = ({
 
                     {printOptions.charts && (
                         <Grid container spacing={2} columns={12} sx={{ mb: 2 }}>
-                            <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-                                <AgeGroupChart data={getAgeGroupsData(getAgeGroups(patients))} />
+                            <Grid item width="50%" padding={1}>
+                                <AgeGroupChart data={ageGroupData} />
                             </Grid>
-                            <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-                                <ProcByType data={getProceduresData(getProceduresByName(procedures))} />
-                            </Grid>
-                            <Grid size={6} sx={{ mb: 2 }}>
-                                <Visitors dataInput={getVisitsByDay()} total={visits[0].length} />
+                            <Grid item width="50%" padding={1}>
+                                <ProcByType data={procByTypeData} />
                             </Grid>
                             <Grid size={6} sx={{ mb: 2 }}>
-                                <VisitsPerDay data={visits[0]} total={visits[0].length} />
+                                <Visitors dataInput={getVisitsByDay} total={totalVisitors} />
+                            </Grid>
+                            <Grid size={6} sx={{ mb: 2 }}>
+                                <VisitsPerDay data={dataVisitsPerDay} total={totalVisitsPerDay} />
                             </Grid>
                         </Grid>
                     )}
