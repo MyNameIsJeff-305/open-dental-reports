@@ -289,10 +289,10 @@ const Dashboard = () => {
                         <ProcByType data={getProceduresData(getProceduresByName(procedures))} />
                     </Grid>
                     <Grid size={6} sx={{ mb: 2 }}>
-                        <Visitors dataInput={getVisitsByDay()} total={visits[0].length}/>
+                        <Visitors dataInput={getVisitsByDay()} total={visits[0]?.length}/>
                     </Grid>
                     <Grid size={6} sx={{ mb: 2 }}>
-                        <VisitsPerDay data={visits[0]} total={visits[0].length}/>
+                        <VisitsPerDay data={visits[0]} total={visits[0]?.length}/>
                     </Grid>
                 </Grid>
 
@@ -357,9 +357,9 @@ const Dashboard = () => {
                 ageGroupData={getAgeGroupsData(getAgeGroups(patients))}
                 procByTypeData={getProceduresData(getProceduresByName(procedures))}
                 getVisitsByDay={getVisitsByDay()}
-                totalVisitors={visits[0].length}
+                totalVisitors={visits[0]?.length}
                 dataVisitsPerDay={visits[0]}
-                totalVisitsPerDay={visits[0].length}
+                totalVisitsPerDay={visits[0]?.length}
             // pass any additional props your PrintPreviewModal might need
             />
         </Box>
