@@ -45,13 +45,13 @@ const Dashboard = () => {
         fetchData();
     }, [dispatch, startDate, endDate]);
 
-    // if (loading) {
-    //     return (
-    //         <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    //             <OrbitProgress variant="track-disc" dense color="#c431cc" size="medium" text="" textColor="" />
-    //         </div>
-    //     );
-    // }
+    if (loading) {
+        return (
+            <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <OrbitProgress variant="track-disc" dense color="#c431cc" size="medium" text="" textColor="" />
+            </div>
+        );
+    }
 
     const handleOpenPrintPreview = () => {
         setOpenPrintPreview(true);
@@ -221,7 +221,7 @@ const Dashboard = () => {
     return (
         <Box sx={{ width: '100%' }}>
             <div className='dashboard-header'>
-                <Typography component="h1" variant="h4" sx={{ mb: 2 }}>
+                <Typography component="h1" variant="h4" sx={{ mb: 2 }} style={{ color: '#333'}}>
                     Dashboard
                 </Typography>
                 <div className='dashboard-header-buttons'>
@@ -259,7 +259,7 @@ const Dashboard = () => {
 
                 <Grid container display="flex" justifyContent="space-between" width="100%">
                     <Grid width="50%" paddingRight="10px">
-                        <Typography component="h3" variant="h6">New Patients</Typography>
+                        <Typography component="h3" variant="h6" style={{ color: '#333'}}>New Patients</Typography>
                         <DataGrid
                             rows={ptRows}
                             columns={ptColumns}
@@ -268,7 +268,7 @@ const Dashboard = () => {
                         />
                     </Grid>
                     <Grid width="50%" paddingLeft="10px">
-                        <Typography component="h3" variant="h6">Procedures</Typography>
+                        <Typography component="h3" variant="h6" style={{ color: '#333'}}>Procedures</Typography>
                         <DataGrid
                             rows={prRows}
                             columns={prColumns}
