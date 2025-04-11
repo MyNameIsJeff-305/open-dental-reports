@@ -43,7 +43,9 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
         theme.palette.primary.dark,
     ];
 
-    console.log('THIS IS dataInput', dataInput);
+    
+    const dataArray = dataInput.map((item: { count: number }) => item.count);
+    console.log('THIS IS dataInput', dataArray);
 
     return (
         <Card variant="outlined" sx={{ width: '100%' }}>
