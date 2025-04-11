@@ -19,6 +19,7 @@ import 'react-day-picker/style.css';
 import AgeGroupChart from './AgeGroupChart';
 import ProcByType from './ProcByType';
 import StatCard from './StatCard';
+import VisitsPerDay from './VisitsPerDay';
 
 import { FaCalendar, FaPrint } from "react-icons/fa";
 import './Dashboard.css';
@@ -226,10 +227,10 @@ const Dashboard = () => {
     const getVisitsByDay = () => {
         const visitsByDay = {};
 
-        if (!visits[0]) return {
+        if (!visits[0]) return [{
             day: "",
             count: 0
-        };
+        }];
 
         visits[0].forEach(visit => {
             const day = moment(visit.date).format('YYYY/MM/DD');
@@ -246,7 +247,7 @@ const Dashboard = () => {
     }
 
     const visitorsCount = () => {
-        return getVisitsByDay().reduce((a, b) => a + b.count, 0);
+        !visits[0] ? 0 : getVisitsByDay().reduce((a, b) => a + b.count, 0);
     }
 
     console.log("PATIENTS", getPeriodDataPatients(getPatientsByDay(patients)))
@@ -288,9 +289,9 @@ const Dashboard = () => {
                     <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
                         <ProcByType data={getProceduresData(getProceduresByName(procedures))} />
                     </Grid>
-                    <Grid size={12} sx={{ mb: 2 }}>
+                    <Grid size={6} sx={{ mb: 2 }}>
                         <StatCard
-                            title="Visitors per Day"
+                            title="Visitors"
                             value={visitorsCount()}
                             interval={`${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}`}
                             trend={"up"}
@@ -298,6 +299,9 @@ const Dashboard = () => {
                                 return day.count;
                             })}
                         />
+                    </Grid>
+                    <Grid size={6} sx={{ mb: 2 }}>
+                        <VisitsPerDay data={visits[0]} />
                     </Grid>
                 </Grid>
 
