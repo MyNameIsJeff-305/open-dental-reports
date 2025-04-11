@@ -288,18 +288,17 @@ const Dashboard = () => {
                     <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
                         <ProcByType data={getProceduresData(getProceduresByName(procedures))} />
                     </Grid>
-                </Grid>
-
-                <Grid container spacing={2} size={12} sx={{ mb: 2 }}>
-                    <StatCard
-                        title="Visitors per Day"
-                        value={visitorsCount()}
-                        interval={`${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}`}
-                        trend={"up"}
-                        data={getVisitsByDay().map((day) => {
-                            return day.count;
-                        })}
-                    />
+                    <Grid size={12} sx={{ mb: 2 }}>
+                        <StatCard
+                            title="Visitors per Day"
+                            value={visitorsCount()}
+                            interval={`${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}`}
+                            trend={"up"}
+                            data={getVisitsByDay().map((day) => {
+                                return day.count;
+                            })}
+                        />
+                    </Grid>
                 </Grid>
 
                 <Grid container display="flex" justifyContent="space-between" width="100%">
