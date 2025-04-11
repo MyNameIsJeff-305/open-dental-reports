@@ -14,6 +14,8 @@ import {
 import StatCard from './StatCard';
 import AgeGroupChart from './AgeGroupChart';
 import ProcByType from './ProcByType';
+import Visitors from './Visitors';
+import VisitsPerDay from './VisitsPerDay';
 
 import './Dashboard.css';
 
@@ -158,11 +160,17 @@ const PrintPreviewModal = ({
 
                     {printOptions.charts && (
                         <Grid container spacing={2} columns={12} sx={{ mb: 2 }}>
-                            <Grid item width="50%" padding={1}>
-                                <AgeGroupChart data={ageGroupData} />
+                            <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+                                <AgeGroupChart data={getAgeGroupsData(getAgeGroups(patients))} />
                             </Grid>
-                            <Grid item width="50%" padding={1}>
-                                <ProcByType data={procByTypeData} />
+                            <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+                                <ProcByType data={getProceduresData(getProceduresByName(procedures))} />
+                            </Grid>
+                            <Grid size={6} sx={{ mb: 2 }}>
+                                <Visitors dataInput={getVisitsByDay()} total={visits[0].length} />
+                            </Grid>
+                            <Grid size={6} sx={{ mb: 2 }}>
+                                <VisitsPerDay data={visits[0]} total={visits[0].length} />
                             </Grid>
                         </Grid>
                     )}
