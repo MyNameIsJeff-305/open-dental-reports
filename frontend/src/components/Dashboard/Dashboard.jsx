@@ -247,7 +247,7 @@ const Dashboard = () => {
     }
 
     const visitorsCount = () => {
-        !visits[0] ? 0 : getVisitsByDay().reduce((a, b) => a + b.count, 0);
+        return visits[0].length;
     }
 
     console.log("PATIENTS", getPeriodDataPatients(getPatientsByDay(patients)))
