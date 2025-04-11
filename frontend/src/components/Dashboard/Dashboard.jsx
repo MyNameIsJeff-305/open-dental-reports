@@ -232,7 +232,7 @@ const Dashboard = () => {
         };
 
         visits[0].forEach(visit => {
-            const day = moment(visit.date).format('MM/DD/YYYY');
+            const day = moment(visit.date).format('YYYY/MM/DD');
             if (!visitsByDay[day]) {
                 visitsByDay[day] = 0;
             }
@@ -244,6 +244,12 @@ const Dashboard = () => {
             count: visitsByDay[day]
         }));
     }
+
+    const visitorsCount = () => {
+        return getVisitsByDay().reduce((a, b) => a + b.count, 0);
+    }
+
+    console.log("VISITS", visitorsCount());
 
     return (
         <Box sx={{ width: '100%' }}>
