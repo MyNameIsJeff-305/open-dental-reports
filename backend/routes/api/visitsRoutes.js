@@ -14,10 +14,10 @@ router.get("/", async (req, res) => {
     }
 
     const query =   `SELECT 
+                        p.ProcDate AS date,
                         pat.PatNum AS patient_id, 
                         pat.FName AS first_name, 
-                        pat.LName AS last_name, 
-                        MIN(p.ProcDate) AS first_visit, 
+                        pat.LName AS last_name,
                         MAX(p.ProcDate) AS last_visit 
                     FROM 
                         procedurelog p 
@@ -28,11 +28,12 @@ router.get("/", async (req, res) => {
                     BETWEEN  
                         ? AND ? 
                     GROUP BY 
-                        pat.PatNum, 
-                        pat.FName, 
+                        p.ProcDate,
+                        pat.PatNum,
+                        pat.FName,
                         pat.LName 
                     ORDER BY 
-                        last_visit DESC;`
+                        date DESC;`
 
 
 

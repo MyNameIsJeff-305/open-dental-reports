@@ -4,12 +4,14 @@ import dashboardReducer from './dashboardReducer';
 import patientReducer from './patientReducer';
 import procedureReducer from './proceduresReducer';
 import sessionReducer from './sessionReducer';
+import visitReducer from './visitReducer';
 
 const rootReducer = combineReducers({
     dashboard: dashboardReducer,
     patient: patientReducer,
     procedure: procedureReducer,
-    session: sessionReducer
+    session: sessionReducer,
+    visit: visitReducer
 });
 
 let enhancer;
