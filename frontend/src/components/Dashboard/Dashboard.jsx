@@ -251,8 +251,6 @@ const Dashboard = () => {
         return visits[0].length;
     }
 
-    console.log("PATIENTS", getPeriodDataPatients(getPatientsByDay(patients)))
-
     return (
         <Box sx={{ width: '100%' }}>
             <div className='dashboard-header'>
@@ -294,7 +292,7 @@ const Dashboard = () => {
                         <Visitors dataInput={getVisitsByDay()} total={visits[0].length}/>
                     </Grid>
                     <Grid size={6} sx={{ mb: 2 }}>
-                        <VisitsPerDay data={visits[0]} />
+                        <VisitsPerDay data={visits[0]} total={visits[0].length}/>
                     </Grid>
                 </Grid>
 

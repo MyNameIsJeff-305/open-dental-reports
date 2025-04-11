@@ -8,8 +8,6 @@ const SideMenu = () => {
     const navigate = useNavigate();
     const user = useSelector(state => state.session.user);
 
-    console.log('User in SideMenu:', user);
-
     const handleLogout = async () => {
         await dispatch(logoutThunk());
         navigate('/'); // Redirect to login or home after logout

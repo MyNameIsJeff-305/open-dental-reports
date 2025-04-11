@@ -64,13 +64,13 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
                             gap: 1,
                         }}
                     >
-                        <Typography variant="h4" component="p">
-                            {total}
-                        </Typography>
                     </Stack>
                     <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                         Visitors per Day
                     </Typography>
+                        <Typography variant="h4" component="p">
+                            {total}
+                        </Typography>
                 </Stack>
                 <LineChart
                     colors={colorPalette}

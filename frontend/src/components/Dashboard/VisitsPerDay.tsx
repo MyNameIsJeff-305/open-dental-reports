@@ -8,7 +8,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { useTheme } from '@mui/material/styles';
 import moment from 'moment';
 
-export default function PageViewsBarChart({data}) {
+export default function PageViewsBarChart({data, total}) {
     const theme = useTheme();
     const colorPalette = [
         theme.palette.primary.dark,
@@ -46,6 +46,9 @@ export default function PageViewsBarChart({data}) {
                             gap: 1,
                         }}
                     >
+                        <Typography variant="h4" component="p">
+                            {total}
+                        </Typography>
                     </Stack>
                 </Stack>
                 <BarChart
