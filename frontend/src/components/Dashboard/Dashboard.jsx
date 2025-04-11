@@ -223,11 +223,11 @@ const Dashboard = () => {
     ];
 
     //Get the amount of visits per day
-    function getVisitsByDay(visits) {
+    const getVisitsByDay = (v) => {
         const visitsByDay = {};
-
-        visits.forEach(visit => {
-            const day = moment(visit.date).format('MM/DD/YYYY');
+        console.log(visits[0], "THIS IS VVVVVVVVVVVVVVVV")
+        v.forEach(vis => {
+            const day = moment(vis.date).format('MM/DD/YYYY');
             if (!visitsByDay[day]) {
                 visitsByDay[day] = 0;
             }
@@ -240,12 +240,10 @@ const Dashboard = () => {
         }));
     }
 
-    console.log("Visits per day", getVisitsByDay(visits));
-
     return (
         <Box sx={{ width: '100%' }}>
             <div className='dashboard-header'>
-                <Typography component="h1" variant="h4" sx={{ mb: 2 }} style={{ color: '#333'}}>
+                <Typography component="h1" variant="h4" sx={{ mb: 2 }} style={{ color: '#333' }}>
                     Dashboard
                 </Typography>
                 <div className='dashboard-header-buttons'>
@@ -282,12 +280,20 @@ const Dashboard = () => {
                 </Grid>
 
                 <Grid container spacing={2} columns={8} sx={{ mb: 2 }}>
-                    
+                    <Grid width={"50%"} paddingRight="10px">
+                        <StatCard 
+                            title="Daily Visitors"
+                            value={getVisitsByDay(visits[0]).reduce((a, b) => a + b.count, 0)}
+                            interval={`${startDate.format('MM/DD/YYYY')} to ${endDate.format('MM/DD/YYYY')}`}
+                            trend={"up"}
+                            data={getVisitsByDay(visits[0])}
+                        />
+                    </Grid>
                 </Grid>
 
                 <Grid container display="flex" justifyContent="space-between" width="100%">
                     <Grid width="50%" paddingRight="10px">
-                        <Typography component="h3" variant="h6" style={{ color: '#333'}}>New Patients</Typography>
+                        <Typography component="h3" variant="h6" style={{ color: '#333' }}>New Patients</Typography>
                         <DataGrid
                             rows={ptRows}
                             columns={ptColumns}
@@ -296,7 +302,7 @@ const Dashboard = () => {
                         />
                     </Grid>
                     <Grid width="50%" paddingLeft="10px">
-                        <Typography component="h3" variant="h6" style={{ color: '#333'}}>Procedures</Typography>
+                        <Typography component="h3" variant="h6" style={{ color: '#333' }}>Procedures</Typography>
                         <DataGrid
                             rows={prRows}
                             columns={prColumns}
