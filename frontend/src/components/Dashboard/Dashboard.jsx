@@ -225,7 +225,9 @@ const Dashboard = () => {
     //Get the amount of visits per day
     const getVisitsByDay = (v) => {
         const visitsByDay = {};
-        console.log(visits[0], "THIS IS VVVVVVVVVVVVVVVV")
+
+        
+
         v.forEach(vis => {
             const day = moment(vis.date).format('MM/DD/YYYY');
             if (!visitsByDay[day]) {
