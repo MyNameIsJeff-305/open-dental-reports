@@ -20,6 +20,7 @@ import AgeGroupChart from './AgeGroupChart';
 import ProcByType from './ProcByType';
 import StatCard from './StatCard';
 import VisitsPerDay from './VisitsPerDay';
+import Visitors from './Visitors';
 
 import { FaCalendar, FaPrint } from "react-icons/fa";
 import './Dashboard.css';
@@ -302,6 +303,9 @@ const Dashboard = () => {
                     </Grid>
                     <Grid size={6} sx={{ mb: 2 }}>
                         <VisitsPerDay data={visits[0]} />
+                    </Grid>
+                    <Grid size={6} sx={{ mb: 2 }}>
+                        <Visitors dataInput={getVisitsByDay()}/>
                     </Grid>
                 </Grid>
 
