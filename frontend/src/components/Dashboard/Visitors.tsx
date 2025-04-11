@@ -77,7 +77,7 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
                     xAxis={[
                         {
                             scaleType: 'point',
-                            data: getXAxis,
+                            data: getXAxis.reverse(),
                             tickInterval: (index, i) => (i + 1) % 5 === 0,
                         },
                     ]}
@@ -89,7 +89,7 @@ export default function SessionsChart({ dataInput, total }: { dataInput: any; to
                             curve: 'linear',
                             stack: 'total',
                             area: true,
-                            data: dataArray,
+                            data: dataArray.reverse(),
                         }
                     ]}
                     height={250}
