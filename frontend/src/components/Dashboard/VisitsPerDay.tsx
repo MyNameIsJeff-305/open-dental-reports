@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { useTheme } from '@mui/material/styles';
+import moment from 'moment';
 
 export default function PageViewsBarChart({data}) {
     const theme = useTheme();
@@ -15,13 +16,19 @@ export default function PageViewsBarChart({data}) {
         theme.palette.primary.light,
     ];
 
-    console.log(data, "THIS IS DATAAAAAAAA")
+    const getWeekdayCounts = (data: { date: string; count: number }[]) => {
+        const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const weekdayCounts = weekdays.map((day) => ({ weekday: day, count: 0 }));
 
-    const getVisitorsPerWeekDay = () => {
-        const visitorsPerWeekDay = [];
+        data.forEach(({ date, count }) => {
+            const dayIndex = moment(date).day();
+            weekdayCounts[dayIndex].count += count;
+        });
 
-        
+        return weekdayCounts;
     }
+
+    console.log(getWeekdayCounts(data), "THIS IS WHAT I WANT");
 
     return (
         <Card variant="outlined" sx={{ width: '100%' }}>
