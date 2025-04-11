@@ -22,7 +22,7 @@ export default function PageViewsBarChart({data}) {
 
         data.forEach(({ date, count }) => {
             const dayIndex = moment(date).day();
-            weekdayCounts[dayIndex].count += count;
+            weekdayCounts[dayIndex].count += 1;
         });
 
         return weekdayCounts;
