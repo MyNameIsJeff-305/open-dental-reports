@@ -4,6 +4,7 @@ import { fetchPatientsByDateRange } from '../../store/patientReducer';
 import { fetchProceduresByDateRange } from '../../store/proceduresReducer';
 import { OrbitProgress } from 'react-loading-indicators';
 import PrintPreviewModal from './PrintPreviewModal';
+import { fetchAllVisits } from '../../store/visitReducer';
 
 import moment from 'moment';
 import dayjs from 'dayjs';
@@ -12,6 +13,7 @@ import Grid from '@mui/material/Grid2';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { DayPicker } from 'react-day-picker';
+
 import 'react-day-picker/style.css';
 
 import AgeGroupChart from './AgeGroupChart';
@@ -32,6 +34,7 @@ const Dashboard = () => {
 
     const patients = useSelector(state => state.patient.patients);
     const procedures = useSelector(state => state.procedure.procedures);
+    const visits = useSelector(state => state.visit.visits);
 
     const dispatch = useDispatch();
 
@@ -40,6 +43,7 @@ const Dashboard = () => {
             setLoading(true);
             await dispatch(fetchPatientsByDateRange(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
             await dispatch(fetchProceduresByDateRange(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
+            await dispatch(fetchAllVisits(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
             setLoading(false);
         }
         fetchData();
@@ -218,6 +222,26 @@ const Dashboard = () => {
         { field: 'patient', headerName: 'Patient', width: 150 }
     ];
 
+    //Get the amount of visits per day
+    function getVisitsByDay(visits) {
+        const visitsByDay = {};
+
+        visits.forEach(visit => {
+            const day = moment(visit.date).format('MM/DD/YYYY');
+            if (!visitsByDay[day]) {
+                visitsByDay[day] = 0;
+            }
+            visitsByDay[day]++;
+        });
+
+        return Object.keys(visitsByDay).map(day => ({
+            day,
+            count: visitsByDay[day]
+        }));
+    }
+
+    console.log("Visits per day", getVisitsByDay(visits));
+
     return (
         <Box sx={{ width: '100%' }}>
             <div className='dashboard-header'>
@@ -255,6 +279,10 @@ const Dashboard = () => {
                     <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
                         <ProcByType data={getProceduresData(getProceduresByName(procedures))} />
                     </Grid>
+                </Grid>
+
+                <Grid container spacing={2} columns={8} sx={{ mb: 2 }}>
+                    
                 </Grid>
 
                 <Grid container display="flex" justifyContent="space-between" width="100%">

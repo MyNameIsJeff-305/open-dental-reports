@@ -6,7 +6,7 @@ const moment = require('moment');
 
 //Get all Patients that attend on a Date Range
 router.get("/", async (req, res) => {
-    const { startDate, endDate } = {startDate: '2025-01-01', endDate: '2025-12-31'}; // Example dates, replace with req.query
+    const { startDate, endDate } = req.params; // Example dates, replace with req.query
 
     // Validate date format
     if (!Date.parse(startDate) || !Date.parse(endDate)) {

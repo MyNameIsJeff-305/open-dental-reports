@@ -11,8 +11,8 @@ const getAllVisits = (visits) => ({
 });
 
 //THUNKS
-export const fetchAllVisits = () => async (dispatch) => {
-    const response = await csrfFetch('/api/visits');
+export const fetchAllVisits = (startDate, endDate) => async (dispatch) => {
+    const response = await csrfFetch('/api/visits?startDate=' + startDate + '&endDate=' + endDate);
     const data = await response.json();
     dispatch(getAllVisits(data));
 };
